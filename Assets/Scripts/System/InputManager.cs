@@ -20,6 +20,8 @@ public class InputManager
 
         a,
         b,
+        x,
+        y,
     }
 
     public static void Init()
