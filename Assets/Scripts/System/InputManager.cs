@@ -66,6 +66,7 @@ public class InputManager
     private Dictionary<Key, bool> raw = new Dictionary<Key, bool>();
 
     private int updatedFrame;
+    private Key[] keys = (Key[])Enum.GetValues(typeof(Key));
 
     private static void CheckAndInit()
     {
@@ -77,7 +78,7 @@ public class InputManager
 
     private InputManager()
     {
-        foreach (Key key in Enum.GetValues(typeof(Key)))
+        foreach (Key key in keys)
         {
             isHold[key] = false;
             isDown[key] = false;
@@ -95,9 +96,16 @@ public class InputManager
         {
             updatedFrame = nowFrame;
             List<(Key, bool)> rawInput = InvokeInputeEvents();
+            foreach (Key key in keys)
+            {
+                raw[key] = false;
+            }
             foreach ((Key key, bool hold) inp in rawInput)
             {
-                raw[inp.key] = inp.hold;
+                if (inp.hold)
+                {
+                    raw[inp.key] = true;
+                }
             }
             foreach (KeyValuePair<Key, bool> pair in raw)
             {
