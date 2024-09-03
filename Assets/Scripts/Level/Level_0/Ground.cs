@@ -130,7 +130,7 @@ public class Ground : MonoBehaviour
             Debug.LogWarning($"{start.x},{start.y}:Moving Failed!");
             return false;
         }
-        bool moved = Blocks[start.x, start.y].MoveTo(start + Vector2Int.down * length, 0.3f, 0.3f);
+        bool moved = Blocks[start.x, start.y].MoveTo(start + Vector2Int.down * length, 0.1f, 0.2f);
         if (moved)
         {
             Blocks[start.x, start.y] = null;

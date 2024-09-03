@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class Block : MonoBehaviour
 {
@@ -59,10 +58,10 @@ public class Block : MonoBehaviour
             }
             else
             {
-                Vector2 start = Frame.instance.GetPosV2(moveEndPos);
+                Vector2 start = Frame.instance.GetPosV2(moveStartPos);
                 Vector2 end = Frame.instance.GetPosV2(moveEndPos);
-                float t = (nowTime-waitingTime)/movingTime;
-                t = Mathf.SmoothStep(0, 1, t);
+                float t = (nowTime-waitingTime)/movingTime/2;
+                t = Mathf.SmoothStep(0, 1, t)*2;
                 transform.localPosition = Vector3.Lerp(start, end, t);
             }
         }

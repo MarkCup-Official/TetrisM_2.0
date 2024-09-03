@@ -384,6 +384,7 @@ public class FallingBlock : MonoBehaviour
     public GroupTypes Holding = GroupTypes.I;
     public bool isHolding = false;
     public bool couldHold = true;
+    public int DAS=500, ARR=50,ARR_down=20;
 
     public void Reload()
     {
@@ -440,7 +441,8 @@ public class FallingBlock : MonoBehaviour
             timmer = fallingTime;
             Move(Vector2Int.down, true);
         }
-        if (moveCold > 0)
+
+        if (moveCold > 0)//left and right handel
         {
             if (GetKey(Key.left)||GetKey(Key.right))
             {
@@ -454,25 +456,25 @@ public class FallingBlock : MonoBehaviour
         if (GetKeyDown(Key.left) && !GetKeyDown(Key.right))
         {
             Move(Vector2Int.left, false);
-            moveCold = 0.5f;
+            moveCold = DAS/1000f;
         }
         if (!GetKeyDown(Key.left)&& GetKeyDown(Key.right))
         {
             Move(Vector2Int.right, false);
-            moveCold = 0.5f;
+            moveCold = DAS / 1000f;
         }
         if (GetKey(Key.left) && !GetKey(Key.right)&& moveCold <= 0)
         {
             Move(Vector2Int.left, false);
-            moveCold = 0.05f;
+            moveCold = ARR / 1000f;
         }
         if (!GetKey(Key.left) && GetKey(Key.right) && moveCold <= 0)
         {
             Move(Vector2Int.right, false);
-            moveCold = 0.05f;
+            moveCold = ARR / 1000f;
         }
 
-        if (!GetKey(Key.x) && GetKeyDown(Key.b) && !GetKey(Key.y))
+        if (!GetKey(Key.x) && GetKeyDown(Key.b) && !GetKey(Key.y))//rotate handel
         {
             bool couldRotate;
             Vector2Int offset;
@@ -509,7 +511,7 @@ public class FallingBlock : MonoBehaviour
             }
         }
 
-        if (downCold > 0)
+        if (downCold > 0)//Dwon Handel
         {
             if (!GetKey(Key.down))
             {
@@ -522,7 +524,7 @@ public class FallingBlock : MonoBehaviour
         }
         if (GetKey(Key.down)&& downCold <= 0)
         {
-            downCold = 0.02f;
+            downCold = ARR_down;
             if (Move(Vector2Int.down, false))
             {
                 timmer = fallingTime;
