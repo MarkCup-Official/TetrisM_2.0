@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public Scene inputScene, levelScene, menuScene;
-    public bool IsSceneLoading { get; private set; } = false;
+    public List<string> loadedScene = new();
+    public List<string> loadingScene = new();
 
     private void Awake()
     {
@@ -27,51 +27,52 @@ public class GameManager : MonoBehaviour
         //LoadLevel(0);
     }
 
-    public void LoadLevel(int level)
+    public void LoadSceneName(string name)
     {
-        if (IsSceneLoading)
+        if (loadedScene.Contains(name))
         {
-            Debug.LogWarning($"Already Loading scene");
+            Debug.LogWarning($"Scene already exist");
             return;
         }
-        IsSceneLoading = true;
-        LoadSceneAdditivelyAsync($"Level_{level}", (Scene loadedScene) =>
+        if (loadingScene.Contains(name))
         {
-            levelScene = loadedScene;
-            IsSceneLoading = false;
-        });
-    }
-
-    public void LoadMenu(int menu)
-    {
-        if (IsSceneLoading)
-        {
-            Debug.LogWarning($"Already Loading scene");
+            Debug.LogWarning($"Loading scene");
             return;
         }
-        IsSceneLoading = true;
-        LoadSceneAdditivelyAsync($"Menu_{menu}", (Scene loadedScene) =>
+        if (Application.CanStreamedLevelBeLoaded(name))
         {
-            menuScene = loadedScene;
-            IsSceneLoading = false;
-        });
+            LoadScene(name);
+        }
+        else
+        {
+            Debug.LogError($"{name} is not in build scenes!");
+        }
+    }
+    public void CloseSceneName(string name)
+    {
+        if (!loadedScene.Contains(name))
+        {
+            Debug.LogWarning($"Scene not exist");
+            return;
+        }
+        if (loadingScene.Contains(name))
+        {
+            Debug.LogWarning($"Loading scene");
+            return;
+        }
+        UnloadScene(name);
     }
 
-    private void LoadSceneAdditivelyAsync(string sceneName, Action<Scene> onSceneLoaded)
+    private void LoadScene(string sceneName)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        asyncLoad.completed += (AsyncOperation op) =>
-        {
-            Scene loadedScene = SceneManager.GetSceneByName(sceneName);
-
-            if (loadedScene.IsValid())
-            {
-                onSceneLoaded?.Invoke(loadedScene);
-            }
-            else
-            {
-                Debug.LogError($"Scene {sceneName} failed to load.");
-            }
-        };
+        loadingScene.Add(sceneName);
+        asyncLoad.completed += (a) => { loadedScene.Add(sceneName); loadingScene.Remove(sceneName); };
+    }
+    private void UnloadScene(string sceneName)
+    {
+        AsyncOperation asyncLoad = SceneManager.UnloadSceneAsync(sceneName);
+        loadingScene.Add(sceneName);
+        asyncLoad.completed += (a) => { loadedScene.Remove(sceneName); loadingScene.Remove(sceneName); };
     }
 }

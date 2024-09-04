@@ -189,8 +189,8 @@ MonoBehaviour:
   right: 275
   down: 274
   down2Bottom: 32
-  leftSpin: 122
-  rightSpin: 120
+  leftSpin: 120
+  rightSpin: 122
   spin180: 97
   hold: 99
 --- !u!1 &1040802304

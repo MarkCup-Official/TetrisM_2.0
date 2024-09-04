@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteAlways] // 确保在编辑模式下也会执行
+[ExecuteAlways]
 public class ScreenSizeAdapter : MonoBehaviour
 {
     public int referenceWidth = 1080;
