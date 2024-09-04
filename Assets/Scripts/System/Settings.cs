@@ -49,6 +49,20 @@ public class Settings : MonoBehaviour
         Save(values);
     }
 
+    public void ResetSetting()
+    {
+        values = GetDefault();
+    }
+    private void SettingChangeF(Dictionary<string, int> values)
+    {
+        TryGetComponent(out IGetSetting getSetting);
+        getSetting?.GetSetting(values[key]);
+        if (inputField != null)
+        {
+            inputField.text = values[key].ToString();
+        }
+    }
+
     private void Save(Dictionary<string, int> values)
     {
         settingChange?.Invoke(values);
@@ -138,6 +152,11 @@ public class Settings : MonoBehaviour
         {
             inputField.text = values[key].ToString();
         }
+        settingChange += SettingChangeF;
+    }
+    private void OnDestroy()
+    {
+        settingChange -= SettingChangeF;
     }
 }
 
