@@ -9,12 +9,14 @@ public class Settings : MonoBehaviour
 {
     public InputField inputField;
 
+    public delegate void SettingChange(Dictionary<string, int> values);
+    public static event SettingChange settingChange;
+
     public string savePath = "main";
     public string key;
 
     public static Dictionary<string,int> values;
 
-    public IGetSetting getSetting;
 
     public void GetInputField()
     {
@@ -36,8 +38,20 @@ public class Settings : MonoBehaviour
         Save(values);
     }
 
+    public void SetValue(int value)
+    {
+        if (!values.ContainsKey(key))
+        {
+            Debug.LogError("error key!");
+            return;
+        }
+        values[key] = value;
+        Save(values);
+    }
+
     private void Save(Dictionary<string, int> values)
     {
+        settingChange?.Invoke(values);
         string content = "";
         foreach(KeyValuePair<string, int> pair in values)
         {
@@ -118,7 +132,8 @@ public class Settings : MonoBehaviour
         {
             values = ReadORInit();
         }
-        getSetting?.GetSetting(values);
+        TryGetComponent(out IGetSetting getSetting);
+        getSetting?.GetSetting(values[key]);
         if (inputField != null)
         {
             inputField.text = values[key].ToString();
@@ -128,5 +143,5 @@ public class Settings : MonoBehaviour
 
 public interface IGetSetting
 {
-    void GetSetting(Dictionary<string, int> values);
+    void GetSetting(int value);
 }

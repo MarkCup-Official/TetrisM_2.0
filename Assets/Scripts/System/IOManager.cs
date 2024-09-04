@@ -30,11 +30,7 @@ public class IOManager
 
     public static void WriteToFile(string path, string content)
     {
-        Debug.Log(Application.persistentDataPath);
-        Debug.Log(path);
         path = Path.Combine(Application.persistentDataPath, path);
-
-        Debug.Log(path);
         string directory = Path.GetDirectoryName(path);
         if (!Directory.Exists(directory))
         {
