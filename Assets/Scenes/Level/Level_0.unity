@@ -1593,6 +1593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1146939605}
   - component: {fileID: 1146939606}
+  - component: {fileID: 1146939607}
   m_Layer: 0
   m_Name: FallingBlock
   m_TagString: Untagged
@@ -1634,6 +1635,24 @@ MonoBehaviour:
   Holding: 0
   isHolding: 0
   couldHold: 1
+  DAS: 0
+  ARR: 0
+  ARR_down: 0
+--- !u!114 &1146939607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146939602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322a5aca9daf59d4399c6bd68dff14a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 0}
+  savePath: main
+  key: left
 --- !u!1 &1160399008
 GameObject:
   m_ObjectHideFlags: 0

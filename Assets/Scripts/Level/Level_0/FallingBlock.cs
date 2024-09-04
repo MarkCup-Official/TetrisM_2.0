@@ -428,9 +428,23 @@ public class FallingBlock : MonoBehaviour
         return res;
     }
 
+    private void SettingChange(Dictionary<string, int> values)
+    {
+        DAS = values["DAS"];
+        ARR = values["ARR"];
+        ARR_down = values["ARRDown"];
+    }
+
     private void Start()
     {
         Reload();
+        Settings.settingChange += SettingChange;
+        SettingChange(Settings.values);
+    }
+
+    private void OnDestroy()
+    {
+        Settings.settingChange -= SettingChange;
     }
 
     private void Update()
@@ -524,7 +538,7 @@ public class FallingBlock : MonoBehaviour
         }
         if (GetKey(Key.down)&& downCold <= 0)
         {
-            downCold = ARR_down;
+            downCold = ARR_down / 1000f;
             if (Move(Vector2Int.down, false))
             {
                 timmer = fallingTime;
